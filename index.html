@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>PCTO ITIS Fermi</title>
+</head>
+<body>
+
+<h1>PCTO ITIS E. Fermi</h1>
+
+<h2>Login</h2>
+<input id="username" placeholder="username">
+<input id="password" type="password" placeholder="password">
+<button onclick="login()">Login</button>
+
+<h2>Inserimento esperienza</h2>
+<input id="studente" placeholder="id studente">
+<input id="ente" placeholder="ente">
+<input id="mansione" placeholder="mansione">
+<input id="inizio" type="date">
+<input id="fine" type="date">
+<input id="ore" placeholder="ore">
+<button onclick="insert()">Inserisci</button>
+
+<h2>Ricerca</h2>
+<input id="dal" type="date">
+<input id="al" type="date">
+<button onclick="search()">Cerca</button>
+
+<pre id="output"></pre>
+
+<script>
+
+async function api(url,method,data){
+    let r = await fetch(url,{
+        method:method,
+        headers:{'Content-Type':'application/json'},
+        credentials:'same-origin',
+        body:data?JSON.stringify(data):null
+    })
+    return await r.json()
+}
+
+async function login(){
+let res = await api('api_login.php','POST',{
+username:username.value,
+password:password.value
+})
+output.textContent=JSON.stringify(res,null,2)
+}
+
+async function insert(){
+let res = await api('api_experiences.php','POST',{
+id_studente:parseInt(studente.value),
+ente_ospitante:ente.value,
+tutor_aziendale:'',
+tutor_scolastico:'',
+mansione:mansione.value,
+data_inizio:inizio.value,
+data_fine:fine.value,
+ore_totali:parseInt(ore.value),
+descrizione:''
+})
+output.textContent=JSON.stringify(res,null,2)
+}
+
+async function search(){
+let r = await fetch(`api_experiences.php?dal=${dal.value}&al=${al.value}`,{credentials:'same-origin'})
+let res = await r.json()
+output.textContent=JSON.stringify(res,null,2)
+}
+
+</script>
+
+</body>
+</html>
