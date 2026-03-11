@@ -14,6 +14,7 @@ function getPDO(): PDO {
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
     }
 
+    /* Restituisce l'oggetto PDO */
     return $pdo;
 }
 ?>

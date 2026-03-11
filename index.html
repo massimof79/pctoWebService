@@ -31,6 +31,8 @@
 
 <script>
 
+
+/* metodo generico per effettuare delle chiamate alle API */
 function api(url,method,data){
 
     let options = {
@@ -49,6 +51,7 @@ function api(url,method,data){
         })
 }
 
+/*Metodo per effettuare il login*/
 function login(){
 
     api('api_login.php','POST',{
@@ -82,6 +85,8 @@ function insert(){
 
 function search(){
 
+
+    /*Chiamata tramite GET*/
     fetch(`api_experiences.php?dal=${dal.value}&al=${al.value}`,{
         credentials:'same-origin'
     })

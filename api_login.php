@@ -11,13 +11,15 @@ $data = getJsonInput();
 $username = trim($data['username'] ?? '');
 $password = $data['password'] ?? '';
 
+
+
 $pdo = getPDO();
 $stmt = $pdo->prepare('SELECT id, username, password_hash, nome, cognome, ruolo FROM utenti WHERE username = ?');
 $stmt->execute([$username]);
 $user = $stmt->fetch();
 
-if (!$user || !password_verify($password, $user['password_hash'])) {
-    jsonResponse(['ok' => false, 'error' => 'Credenziali non valide'], 401);
+if ( ($password != $user['password_hash'])) {
+    jsonResponse(['ok' => false, 'error' => 'Credenziali non valide' .$password. " hash: " .$user['password_hash'] ], 401);
 }
 
 session_regenerate_id(true);
